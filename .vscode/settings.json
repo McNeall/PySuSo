@@ -1,4 +1,8 @@
 {
+    // Helps to discover tests
+    "python.testing.pytestArgs": [
+        "tests"
+    ],
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
 }
