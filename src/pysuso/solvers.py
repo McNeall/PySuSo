@@ -1,3 +1,5 @@
+"""This module contains a collection of Sudoku solvers"""
+
 from collections import deque
 from typing import Deque
 
@@ -6,14 +8,33 @@ from pysuso.exceptions import BoardNotSolvableException, InvalidCellValueExcepti
 
 
 class BasicSolver:
+    """A basic Soduko solver using a brute force back tracking algorithm
+
+    This solver uses back tracking for the empty cells. Cells are processed left to right, top to
+    bottom. It always picks the next higher value valid value. The algorithm stops in case one valid
+    solution is found. There is no check if there is another valid solution.
+    """
 
     SQUARE_SIZE = 3
     BOARD_SIZE = 9
 
     def __init__(self, board: Board) -> None:
+        """Setup the solver
+
+        Args:
+            board: Board that should be solved
+        """
         self.unsolved_board = board
 
     def solve(self) -> Board:
+        """Searches for a valid solution of the board and returns the filled board.
+
+        Raises:
+            BoardNotSolvableException: If no valid solution for the board is found.
+
+        Returns:
+            A board filled with a valid solution.
+        """
         remaining_cells = deque([coordinate for coordinate, value in self.unsolved_board if value == 0])
         history: Deque[Coordinate] = deque()
         while remaining_cells:
