@@ -1,3 +1,5 @@
+"""Module containing an implementation of a Sudoku board and related objects"""
+
 from __future__ import annotations
 
 import os
@@ -14,6 +16,19 @@ from pysuso.exceptions import (
 
 @dataclass(frozen=True)
 class Coordinate:
+    """Represents a coordinate on a board.
+
+    The indices passed to the dataclass are validate. A coordinate is immutable.
+
+    Args:
+        row: Row index of the coordinate. Needs to be between 0 and 8, both included.
+        col: Col index of the coordinate. Needs to be between 0 and 8, both included.
+
+    Raises:
+        ValueError: If row or column index are invalid. Indizes are invalid in case they are not
+            between zero and 8, both included.
+    """
+
     row: int
     col: int
 
@@ -25,11 +40,31 @@ class Coordinate:
 
 
 class Board:
+    """Presenting a possibly unfinished Sudoku board."""
+
     _BOARD_DIM = 9
     _SQUARE_SIZE = 3
     _VALID_VALUES = set(range(1, _BOARD_DIM + 1))
 
     def __init__(self, values: List[int], _is_direct: bool = True) -> Board:
+        """Initializes the Board. Should not be called from outside the class.
+
+        The constructure initializes the class but assumes a valid input. Do not not directly
+        instantiate this class. Use one of the factory methods:
+
+        - from_nested_lists
+        - from_string
+        - from_list
+
+        Args:
+            values: Values to initialize the Board. Values are not checked.
+            _is_direct: Indicates if the constructor was called from outside the class.
+                Defaults to 'True'.
+
+        Raises:
+            RuntimeError: If constructor is called directly, that is not using one of the listed
+                factory methods
+        """
         if _is_direct:
             raise RuntimeError(
                 "Calling the Board constructure is not supported. Use one of the factory methods to create a board."
@@ -41,6 +76,24 @@ class Board:
 
     @classmethod
     def from_nested_lists(cls, values: List[List[int]]) -> Board:
+        """Return a new Board based on the passed values.
+
+        The passed argument needs to have exactly nine elements. Each of them has to be a list
+        with nine integers between zero and nine, both included. A value of zero marks an empty field.
+
+        Args:
+            values: The values used to create the board
+
+        Returns:
+            Board: Board holding the values given by `values`.
+
+        Raises:
+            InvalidBoardException: Raised in the following cases:
+
+                - If the outter list has less than nine inner lists.
+                - If an inner list has less than nine elements.
+                - If the values are not between zero and nine.
+        """
         if len(values) != cls._BOARD_DIM:
             raise InvalidBoardException(
                 f"Cannot create board. Expected {cls._BOARD_DIM} rows but received {len(values)}."
@@ -71,6 +124,23 @@ class Board:
 
     @classmethod
     def from_list(cls, values: List[int]) -> Board:
+        """Return a new Board based on the passed values.
+
+        The passed argument needs to have exactly 81 integers between 0 and 9, both included.
+        A value of zero marks an empty field.
+
+        Args:
+            values: The values used to create the board.
+
+        Returns:
+            Board: Board holding the values given by `values`.
+
+        Raises:
+            InvalidBoardException: Raised in the following cases:
+
+                - If `values` does not have exactly 81 elements
+                - If elements of `values` are not between 0 and 9, both included.
+        """
         if len(values) != cls._BOARD_DIM**2:
             raise InvalidBoardException(
                 f"Cannot create board. Expected {cls._BOARD_DIM ** 2} rows but received {len(values)}."
@@ -85,6 +155,23 @@ class Board:
 
     @classmethod
     def from_string(cls, values: str) -> Board:
+        """Return a new Board based on the passed values.
+
+        The passed string needs to have exactly 81 characters. Each character being an integer
+
+        Args:
+            values: The values used to create the board
+
+        Returns:
+            Board holding the values given by `values` after converting to integer
+
+        Raises:
+            InvalidBoardException: Raised in the following cases:
+
+                - If the passed string does not have exactly 81 characters
+                - If there is a character that is not convertible to an integer
+                - If the converted characters are not integers between zero and nine
+        """
         if len(values) != cls._BOARD_DIM**2:
             raise InvalidBoardException(
                 f"Cannot create board. Expected {cls._BOARD_DIM ** 2} values but received {len(values)}."
@@ -106,18 +193,48 @@ class Board:
             return cls(valid_values, _is_direct=False)
 
     def available_col_values(self, column_index: int) -> Set[int]:
+        """Return the allowed but unused values for the column given by column_index.
+
+        Args:
+            column_index: The column index starting at 0.
+
+        Returns:
+            : Values available for the row indentified by the passed row_index
+
+        Raises:
+            InvalidIndexException: If `column_index` is less than 0 or greater or equal 9.
+        """
         if column_index < 0 or column_index >= self._BOARD_DIM:
             raise InvalidIndexException(f"Expecting a column index betwenn 0 and 8, but {column_index} was given")
         values_in_column = set(self._values[column_index : self._BOARD_DIM**2 : self._BOARD_DIM])
         return Board._VALID_VALUES.difference(values_in_column)
 
     def available_row_values(self, row_index: int) -> Set[int]:
+        """Return the allowed but unused values for the row given by row_index.
+
+        Args:
+            row_index: The row index starting at 0. Values has to be between 0 and 8.
+
+        Returns:
+            Values available for the row indentified by the passed row_index
+
+        Raises:
+            InvalidIndexException: If `row_index` is less than 0 or greater or equal 9.
+        """
         if row_index < 0 or row_index >= self._BOARD_DIM:
             raise InvalidIndexException(f"Expecting a row index betwenn 0 and 8, but {row_index} was given")
         values_in_row = set(self._values[self._BOARD_DIM * row_index : self._BOARD_DIM * (row_index + 1)])
         return Board._VALID_VALUES.difference(values_in_row)
 
     def available_square_values(self, coordinate: Coordinate) -> Set[int]:
+        """Return the allowed but unused values of the 3x3 square that contains the coordinate.
+
+        Args:
+            coordinate: coordinate used to determine the square for which the values should be returned.
+
+        Returns:
+            Values available for the 3x3 square the given coordinate is located in.
+        """
         top_left = Coordinate(
             coordinate.row - coordinate.row % self._SQUARE_SIZE,
             coordinate.col - coordinate.col % self._SQUARE_SIZE,
@@ -129,6 +246,22 @@ class Board:
         return Board._VALID_VALUES.difference(values_in_square)
 
     def is_valid(self, coordinate: Coordinate, value: int) -> bool:
+        """Check that `value` is valid for `coordinate` based on the current state of the board.
+
+        A value is seen as valid if all of the following cases hold:
+
+        - Value is between 1 and 9 both included.
+        - Value is not yet present in the row the cell belongs to.
+        - Value is not yet present in the column the cell belongs to.
+        - Value is not yet present in the 3x3 square the cell is in.
+
+        Args:
+            coordinate: Position on the board.
+            value: Value for position given by `coordinate`.
+
+        Returns:
+            `True` if value is valid for `coordinate` otherwise `False`.
+        """
         if value <= 0 or value > 9:
             return False
         if (
@@ -140,19 +273,57 @@ class Board:
         return False
 
     def __iter__(self) -> Iterator[Tuple[Coordinate, int]]:
+        """Iterate through the board left to right, top to bottom.
+
+        Return an iterator which allows to walk the board from left to right and top to bottom. The
+        iterator returns a tuple that has a Coordinate as first entry and the current value of the
+        board at the coordinate as the second entry.
+
+        Returns:
+            Tuple with first element Coordinate and second element integer value at the given
+                coordinate.
+        """
         for i in range(0, self._BOARD_DIM**2):
             row = i // self._BOARD_DIM
             column = i % self._BOARD_DIM
             yield (Coordinate(row, column), self._values[i])
 
     def _calculate_index(self, coordinate: Coordinate) -> int:
+        """Calcuate the index of the given coordinate in the internal value storage.
+
+        Args:
+            coordinate: Coordinate for which the index should be calculated.
+
+        Returns:
+            Index that corresponds to the `coordinate`.
+        """
         return coordinate.row * self._BOARD_DIM + coordinate.col
 
     def __getitem__(self, coordinate: Coordinate) -> int:
+        """Return the value at `coordinate`.
+
+        Args:
+            coordinate: Coordinate of the cell for which to return the value.
+
+        Returns:
+            Value of the cell given by `coordinate`.
+        """
         index = self._calculate_index(coordinate)
         return self._values[index]
 
     def __setitem__(self, coordinate: Coordinate, value: int) -> None:
+        """Set `value` at `coordinate` in case the value is valid for this position.
+
+        Args:
+            coordinate: Position on the board that should be updated.
+            value: New value.
+
+        Raises:
+            InvalidCellValueException: If `value` is not valid for position given by `coordinate`.
+                A value is valid if one of the following cases holds:
+                - The coordinate was initially empty and the value is 0.
+                - The value fulfills the conditions of a valid sudoku board. See `is_valid` method.
+        """
         # Allow to set an initial empty cell to empty again
         valid_for_empty_cell = coordinate in self._initial_empty_cells and value == 0
         valid_for_cell = self.is_valid(coordinate, value)
