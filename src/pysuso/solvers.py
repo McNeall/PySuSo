@@ -21,7 +21,6 @@ class BasicSolver:
         """Configure the solver.
 
         Args:
-        ----
             board: Board that should be solved
 
         """
@@ -30,12 +29,10 @@ class BasicSolver:
     def solve(self) -> Board:
         """Search a valid solution of the board and returns the filled board.
 
-        Raises
-        ------
+        Raises:
             BoardNotSolvableException: If no valid solution for the board is found.
 
-        Returns
-        -------
+        Returns:
             A board filled with a valid solution.
 
         """
