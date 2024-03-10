@@ -1,12 +1,13 @@
+"""PySuSo boards tests."""
+
 import os
 
 import pytest
-
 from pysuso.boards import Board, Coordinate
 from pysuso.exceptions import (
-    InvalidBoardException,
-    InvalidCellValueException,
-    InvalidIndexException,
+    InvalidBoardError,
+    InvalidCellValueError,
+    InvalidIndexError,
 )
 
 
@@ -143,7 +144,7 @@ def fixture_invalid_number_of_columns() -> list[list[int]]:
     ]
 
 
-@pytest.fixture(name="function_scope_test_board", scope="function")
+@pytest.fixture(name="function_scope_test_board")
 def fixture_function_scope_test_board(nested_list_raw_values: list[list[int]]) -> Board:
     """Provide a Sudoku Board. Function scoped, can be change during tests."""
     return Board.from_nested_lists(nested_list_raw_values)
@@ -169,8 +170,9 @@ def fixture_square_top_left_edges() -> list[Coordinate]:
 
 @pytest.fixture(name="example_board_representation", scope="module")
 def fixture_example_board_representation() -> str:
-    """Provide the string representation of a Sudou board. This representation provides the board representation for
-    fixture `nested_list_raw_values`.
+    """Provide the string representation of a Sudou board.
+
+    Representation belonging to board created by fixture `nested_list_raw_values`.
     """
     return (
         f"-------------------------------------{os.linesep}| 0 | 5 | 0 | 7 | 0 | 3 | 0 | 6 | 0 |{os.linesep}"
@@ -207,7 +209,7 @@ class TestBoard:
 
     def test_available_col_values_invalid_index(self, module_scope_test_board: Board) -> None:
         """Test behaviour of `available_col_values` method for an invalid index."""
-        with pytest.raises(InvalidIndexException) as excinfo:
+        with pytest.raises(InvalidIndexError) as excinfo:
             module_scope_test_board.available_col_values(9)
         assert str(excinfo.value) == "Expecting a column index betwenn 0 and 8, but 9 was given"
 
@@ -227,7 +229,7 @@ class TestBoard:
 
     def test_available_row_values_invalid_index(self, module_scope_test_board: Board) -> None:
         """Test behaviour of `available_row_values` method for an invalid index."""
-        with pytest.raises(InvalidIndexException) as excinfo:
+        with pytest.raises(InvalidIndexError) as excinfo:
             module_scope_test_board.available_row_values(9)
         assert str(excinfo.value) == "Expecting a row index betwenn 0 and 8, but 9 was given"
 
@@ -280,7 +282,7 @@ class TestBoard:
     def test_board_set_index_invalid_value(self, function_scope_test_board: Board) -> None:
         """Test that setting a coordinate on the board works for a valid value."""
         coordinate = Coordinate(0, 0)
-        with pytest.raises(InvalidCellValueException) as excinfo:
+        with pytest.raises(InvalidCellValueError) as excinfo:
             function_scope_test_board[coordinate] = 5
         assert str(excinfo.value) == "Value 5 not valid for Coordinate(row=0, col=0)"
 
@@ -293,9 +295,9 @@ class TestBoard:
         self, invalid_symbol_raw_values: list[list[int | str]]
     ) -> None:
         """Test creation of board from nested list with invald symbols."""
-        with pytest.raises(InvalidBoardException) as excinfo:
+        with pytest.raises(InvalidBoardError) as excinfo:
             # Passing a list containing invalid types is part of the test hence ignore error.
-            Board.from_nested_lists(invalid_symbol_raw_values)  # type: ignore
+            Board.from_nested_lists(invalid_symbol_raw_values)  # pyright: ignore reportArgumentType
         assert str(excinfo.value) == (
             f"Expect values between 0 and 9. Found invalid values:{os.linesep}"
             f"(0, 0): ?{os.linesep}(4, 4): ?{os.linesep}(8, 8): ?"
@@ -305,7 +307,7 @@ class TestBoard:
         self, invalid_number_of_rows: list[list[int]]
     ) -> None:
         """Test creation of board from nested list with invald number of rows."""
-        with pytest.raises(InvalidBoardException) as excinfo:
+        with pytest.raises(InvalidBoardError) as excinfo:
             Board.from_nested_lists(invalid_number_of_rows)
         assert str(excinfo.value) == "Cannot create board. Expected 9 rows but received 2."
 
@@ -313,7 +315,7 @@ class TestBoard:
         self, invalid_number_of_columns: list[list[int]]
     ) -> None:
         """Test creation of board from nested list with invald number of columns."""
-        with pytest.raises(InvalidBoardException) as excinfo:
+        with pytest.raises(InvalidBoardError) as excinfo:
             Board.from_nested_lists(invalid_number_of_columns)
         assert str(excinfo.value) == (
             f"Cannot create board. Rows found with invalid length{os.linesep}"
@@ -333,18 +335,18 @@ class TestBoard:
         self, flat_list_raw_values_invalid_length: list[int | str]
     ) -> None:
         """Test creation of board from flat list with invalid length."""
-        with pytest.raises(InvalidBoardException) as excinfo:
+        with pytest.raises(InvalidBoardError) as excinfo:
             # Passing a list containing invalid types is part of the test hence ignore error.
-            Board.from_list(flat_list_raw_values_invalid_length)  # type: ignore
+            Board.from_list(flat_list_raw_values_invalid_length)  # pyright: ignore reportArgumentType
         assert str(excinfo.value) == "Cannot create board. Expected 81 rows but received 78."
 
     def test_create_board_from_flat_list_invalid_values(
         self, flat_list_raw_values_invalid_values: list[int | str]
     ) -> None:
         """Test creation of board from flat list with invalid values."""
-        with pytest.raises(InvalidBoardException) as excinfo:
+        with pytest.raises(InvalidBoardError) as excinfo:
             # Passing a list containing invalid types is part of the test hence ignore error.
-            Board.from_list(flat_list_raw_values_invalid_values)  # type: ignore
+            Board.from_list(flat_list_raw_values_invalid_values)  # pyright: ignore reportArgumentType
         assert str(excinfo.value) == (
             f"Expect values between 0 and 9. Found invalid values:{os.linesep}"
             f"13: -1{os.linesep}"
@@ -371,13 +373,13 @@ class TestBoard:
 
     def test_create_board_from_invalid_length(self, string_raw_values_invalid_length: str) -> None:
         """Test behaviour in case a board is created with too short string."""
-        with pytest.raises(InvalidBoardException) as excinfo:
+        with pytest.raises(InvalidBoardError) as excinfo:
             Board.from_string(string_raw_values_invalid_length)
         assert str(excinfo.value) == "Cannot create board. Expected 81 values but received 78."
 
     def test_create_board_from_invalid_chars(self, string_raw_values_invalid_chars: str) -> None:
         """Test behaviour in case a board is created with a string containing invalid values."""
-        with pytest.raises(InvalidBoardException) as excinfo:
+        with pytest.raises(InvalidBoardError) as excinfo:
             Board.from_string(string_raw_values_invalid_chars)
         assert str(excinfo.value) == (
             f"Error creating board. Found invalid values:{os.linesep}"
@@ -393,12 +395,12 @@ class TestCoordinate:
 
     def test_coordinate_invalid_row(self) -> None:
         """Test that a coordinate cannot be created with an invalid row index."""
-        with pytest.raises(ValueError) as excinfo:
+        with pytest.raises(ValueError, match=r"Row index needs to be between zero and eight. Given -1") as excinfo:
             Coordinate(-1, 10)
         assert str(excinfo.value) == "Row index needs to be between zero and eight. Given -1"
 
     def test_coordinate_invalid_column(self) -> None:
         """Test that a coordinate cannot be created with an invalid column index."""
-        with pytest.raises(ValueError) as excinfo:
+        with pytest.raises(ValueError, match=r"Row index needs to be between zero and eight. Given 10") as excinfo:
             Coordinate(0, 10)
         assert str(excinfo.value) == "Column index needs to be between zero and eight. Given 10"

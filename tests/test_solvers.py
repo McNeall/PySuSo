@@ -1,9 +1,6 @@
-"""This module contains the tests for the Sudoku solver implementation"""
-
-from typing import List
+"""Contains the tests for the Sudoku solver implementation."""
 
 import pytest
-
 from pysuso.boards import Board
 from pysuso.exceptions import BoardNotSolvableException
 from pysuso.solvers import BasicSolver
@@ -11,7 +8,7 @@ from pysuso.solvers import BasicSolver
 
 @pytest.fixture(scope="module")
 def easy_board() -> Board:
-    """Provides a board rated with a easy difficulty. Module scope do not change during test runs."""
+    """Provide a board rated with a easy difficulty. Module scope do not change during test runs."""
     return Board.from_nested_lists(
         [
             [0, 5, 0, 7, 0, 3, 0, 6, 0],
@@ -28,7 +25,7 @@ def easy_board() -> Board:
 
 
 @pytest.fixture(scope="module")
-def solution_easy_board() -> List[List[int]]:
+def solution_easy_board() -> list[list[int]]:
     """Solution for board provided by fixture `easy_board`. Module scope do not change during test runs."""
     return [
         [1, 5, 8, 7, 2, 3, 4, 6, 9],
@@ -45,7 +42,7 @@ def solution_easy_board() -> List[List[int]]:
 
 @pytest.fixture(scope="module")
 def medium_board() -> Board:
-    """Provides a board rated with a medium difficulty. Module scope do not change during test runs."""
+    """Provide a board rated with a medium difficulty. Module scope do not change during test runs."""
     return Board.from_nested_lists(
         [
             [0, 0, 2, 0, 0, 0, 8, 0, 0],
@@ -62,7 +59,7 @@ def medium_board() -> Board:
 
 
 @pytest.fixture(scope="module")
-def solution_medium_board() -> List[List[int]]:
+def solution_medium_board() -> list[list[int]]:
     """Solution for board provided by fixture `medium_board`. Module scope do not change during test runs."""
     return [
         [3, 1, 2, 9, 4, 7, 8, 6, 5],
@@ -79,7 +76,7 @@ def solution_medium_board() -> List[List[int]]:
 
 @pytest.fixture(scope="module")
 def hard_board() -> Board:
-    """Provides a board rated with a hard difficulty. Module scope do not change during test runs."""
+    """Provide a board rated with a hard difficulty. Module scope do not change during test runs."""
     return Board.from_nested_lists(
         [
             [0, 0, 0, 0, 0, 8, 4, 0, 0],
@@ -96,7 +93,7 @@ def hard_board() -> Board:
 
 
 @pytest.fixture(scope="module")
-def solution_hard_board() -> List[List[int]]:
+def solution_hard_board() -> list[list[int]]:
     """Solution for board provided by fixture `hard_board`. Module scope do not change during test runs."""
     return [
         [9, 2, 1, 6, 3, 8, 4, 5, 7],
@@ -113,7 +110,7 @@ def solution_hard_board() -> List[List[int]]:
 
 @pytest.fixture(scope="module")
 def diabolical_board() -> Board:
-    """Provides a board rated with a diabolical difficulty. Module scope do not change during test runs."""
+    """Provide a board rated with a diabolical difficulty. Module scope do not change during test runs."""
     return Board.from_nested_lists(
         [
             [0, 5, 0, 9, 0, 8, 6, 0, 0],
@@ -130,7 +127,7 @@ def diabolical_board() -> Board:
 
 
 @pytest.fixture(scope="module")
-def solution_diabolical_board() -> List[List[int]]:
+def solution_diabolical_board() -> list[list[int]]:
     """Solution for board provided by fixture `diabolical_board`. Module scope do not change during test runs."""
     return [
         [3, 5, 7, 9, 4, 8, 6, 2, 1],
@@ -147,7 +144,7 @@ def solution_diabolical_board() -> List[List[int]]:
 
 @pytest.fixture(name="unsolvable_board", scope="module")
 def fixture_unsolvable_board() -> Board:
-    """Provides an unsolvable board. Module scope do not change during test runs."""
+    """Provide an unsolvable board. Module scope do not change during test runs."""
     return Board.from_nested_lists(
         [
             [1, 5, 0, 7, 2, 3, 4, 0, 9],
@@ -167,7 +164,7 @@ class TestBasicSolver:
     """Groups tests for the BasicSolver class."""
 
     @pytest.mark.parametrize(
-        "board_fixture,solution_fixture",
+        ("board_fixture", "solution_fixture"),
         [
             ("easy_board", "solution_easy_board"),
             ("medium_board", "solution_medium_board"),
@@ -178,7 +175,7 @@ class TestBasicSolver:
     def test_solver(self, board_fixture: str, solution_fixture: str, request: pytest.FixtureRequest) -> None:
         """Test solver againt boards of varying difficulity."""
         board: Board = request.getfixturevalue(board_fixture)
-        solution: List[List[int]] = request.getfixturevalue(solution_fixture)
+        solution: list[list[int]] = request.getfixturevalue(solution_fixture)
         solver = BasicSolver(board)
         solved_board = solver.solve()
         for position, value in solved_board:
