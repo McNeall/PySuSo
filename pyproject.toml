@@ -30,24 +30,75 @@ distribution = true
 
 [tool.pdm.dev-dependencies]
 dev = [
-    "black>=24.2.0",
     "mypy>=1.8.0",
-    "pylint>=3.0.4",
-    "isort>=5.13.2",
-    "bandit[baseline,toml]>=1.7.7",
+    "ruff>=0.3.2",
 ]
-
-[tool.black]
-line-length=120
-preview = true
-
-[tool.isort]
-profile = "black"
-
-[tool.pylint]
-max-line-length = 120
 
 [tool.pytest.ini_options]
 pythonpath = [
   "src"
+]
+
+[tool.ruff]
+line-length = 120
+indent-width = 4
+target-version = "py312"
+include = ["pyproject.toml", "src/**/*.py", "tests/**/*.py"]
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "site-packages",
+    "venv",
+    "docs",
+]
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "D203", # Checks for blank line between class and docstring. Incompatible with D211.
+    "D213",  # docstring summary on second line of docstring.
+    "COM812", # Conflicts with formatter.
+    "ISC001",
+    "ANN101", # Deprecated
+    "ANN102" # Deprecated
+]
+fixable = ["ALL"]
+unfixable = [
+    "F401" # Do not autofix unused imports.
+]
+extend-safe-fixes = [
+    "D400" # Add periods at end of docstring summary.
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "lf"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = [
+    "S101", # Allow assert in tests
 ]
