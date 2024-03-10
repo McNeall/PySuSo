@@ -32,6 +32,7 @@ distribution = true
 dev = [
     "mypy>=1.8.0",
     "ruff>=0.3.2",
+    "pyright>=1.1.353",
 ]
 
 [tool.pytest.ini_options]
@@ -102,3 +103,7 @@ line-ending = "lf"
 "tests/**/*.py" = [
     "S101", # Allow assert in tests
 ]
+
+[tool.pyright]
+typeCheckingMode = "strict"
+include = ['src/**/*.py', "tests/**/*.py"]
