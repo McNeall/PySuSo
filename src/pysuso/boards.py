@@ -65,7 +65,7 @@ class Board:
     _SQUARE_SIZE = 3
     _VALID_VALUES = frozenset(range(1, _BOARD_DIM + 1))
 
-    def __init__(self, values: list[int], _call_type: CallType = CallType.NON_PRIVATE) -> Board:
+    def __init__(self, values: list[int], _call_type: CallType = CallType.NON_PRIVATE) -> None:
         """Initialize the Board. Should not be called from outside the class.
 
         The constructure initializes the class but assumes a valid input. Do not not directly
@@ -208,8 +208,8 @@ class Board:
         if len(values) != cls._BOARD_DIM**2:
             message = f"Cannot create board. Expected {cls._BOARD_DIM ** 2} values but received {len(values)}."
             raise InvalidBoardError(message)
-        invalid_positions = {}
-        valid_values = []
+        invalid_positions: dict[int, str] = {}
+        valid_values: list[int] = []
         for i, value in enumerate(values):
             try:
                 converted_value = int(value)
@@ -223,7 +223,7 @@ class Board:
             raise InvalidBoardError(f"{os.linesep}".join(message))
         return cls(valid_values, _call_type=CallType.PRIVATE)
 
-    def available_col_values(self, column_index: int) -> set[int]:
+    def available_col_values(self, column_index: int) -> frozenset[int]:
         """Return the allowed but unused values for the column given by column_index.
 
         Args:
@@ -245,7 +245,7 @@ class Board:
         values_in_column = set(self._values[column_index : self._BOARD_DIM**2 : self._BOARD_DIM])
         return Board._VALID_VALUES.difference(values_in_column)
 
-    def available_row_values(self, row_index: int) -> set[int]:
+    def available_row_values(self, row_index: int) -> frozenset[int]:
         """Return the allowed but unused values for the row given by row_index.
 
         Args:
@@ -267,7 +267,7 @@ class Board:
         values_in_row = set(self._values[self._BOARD_DIM * row_index : self._BOARD_DIM * (row_index + 1)])
         return Board._VALID_VALUES.difference(values_in_row)
 
-    def available_square_values(self, coordinate: Coordinate) -> set[int]:
+    def available_square_values(self, coordinate: Coordinate) -> frozenset[int]:
         """Return the allowed but unused values of the 3x3 square that contains the coordinate.
 
         Args:
@@ -283,7 +283,7 @@ class Board:
             coordinate.row - coordinate.row % self._SQUARE_SIZE,
             coordinate.col - coordinate.col % self._SQUARE_SIZE,
         )
-        values_in_square = set()
+        values_in_square: set[int] = set()
         for i in range(Board._SQUARE_SIZE):
             start_index = (top_left.row + i) * self._BOARD_DIM + top_left.col
             values_in_square.update(self._values[start_index : start_index + 3])
@@ -394,7 +394,7 @@ class Board:
 
     def __str__(self) -> str:
         """Return a string representation of the board."""
-        formated_rows = []
+        formated_rows: list[str] = []
         for i in range(0, self._BOARD_DIM**2, self._BOARD_DIM):
             row = self._values[i : i + self._BOARD_DIM]
             template_string = ("| " + "{} | " * self._BOARD_DIM).strip()
