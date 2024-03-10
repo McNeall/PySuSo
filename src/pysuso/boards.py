@@ -1,4 +1,4 @@
-"""Module containing an implementation of a Sudoku board and related objects."""
+"""Contains an implementation of a Sudoku board and related objects."""
 
 from __future__ import annotations
 
@@ -25,12 +25,10 @@ class Coordinate:
     The indices passed to the dataclass are validate. A coordinate is immutable.
 
     Args:
-    ----
         row: Row index of the coordinate. Needs to be between 0 and 8, both included.
         col: Col index of the coordinate. Needs to be between 0 and 8, both included.
 
     Raises:
-    ------
         ValueError: If row or column index are invalid. Indizes are invalid in case they are not
             between zero and 8, both included.
 
@@ -76,13 +74,11 @@ class Board:
         - from_list
 
         Args:
-        ----
             values: Values to initialize the Board. Values are not checked.
-            _calltype: Indicates if the constructor was called from outside the class.
+            _call_type: Indicates if the constructor was called from outside the class.
                 Defaults to 'True'.
 
         Raises:
-        ------
             RuntimeError: If constructor is called directly, that is not using one of the listed
                 factory methods
 
@@ -105,15 +101,12 @@ class Board:
         with nine integers between zero and nine, both included. A value of zero marks an empty field.
 
         Args:
-        ----
             values: The values used to create the board
 
         Returns:
-        -------
             Board: Board holding the values given by `values`.
 
         Raises:
-        ------
             InvalidBoardException: Raised in the following cases:
 
                 - If the outter list has less than nine inner lists.
@@ -156,15 +149,12 @@ class Board:
         A value of zero marks an empty field.
 
         Args:
-        ----
             values: The values used to create the board.
 
         Returns:
-        -------
             Board: Board holding the values given by `values`.
 
         Raises:
-        ------
             InvalidBoardException: Raised in the following cases:
 
                 - If `values` does not have exactly 81 elements
@@ -189,15 +179,12 @@ class Board:
         The passed string needs to have exactly 81 characters. Each character being an integer
 
         Args:
-        ----
             values: The values used to create the board
 
         Returns:
-        -------
             Board holding the values given by `values` after converting to integer
 
         Raises:
-        ------
             InvalidBoardException: Raised in the following cases:
 
                 - If the passed string does not have exactly 81 characters
@@ -227,15 +214,12 @@ class Board:
         """Return the allowed but unused values for the column given by column_index.
 
         Args:
-        ----
             column_index: The column index starting at 0.
 
         Returns:
-        -------
-            : Values available for the row indentified by the passed row_index
+            Values available for the row indentified by the passed row_index
 
         Raises:
-        ------
             InvalidIndexException: If `column_index` is less than 0 or greater or equal 9.
 
         """
@@ -249,15 +233,12 @@ class Board:
         """Return the allowed but unused values for the row given by row_index.
 
         Args:
-        ----
             row_index: The row index starting at 0. Values has to be between 0 and 8.
 
         Returns:
-        -------
             Values available for the row indentified by the passed row_index
 
         Raises:
-        ------
             InvalidIndexException: If `row_index` is less than 0 or greater or equal 9.
 
         """
@@ -271,11 +252,9 @@ class Board:
         """Return the allowed but unused values of the 3x3 square that contains the coordinate.
 
         Args:
-        ----
             coordinate: coordinate used to determine the square for which the values should be returned.
 
         Returns:
-        -------
             Values available for the 3x3 square the given coordinate is located in.
 
         """
@@ -300,12 +279,10 @@ class Board:
         - Value is not yet present in the 3x3 square the cell is in.
 
         Args:
-        ----
             coordinate: Position on the board.
             value: Value for position given by `coordinate`.
 
         Returns:
-        -------
             `True` if value is valid for `coordinate` otherwise `False`.
 
         """
@@ -326,8 +303,7 @@ class Board:
         iterator returns a tuple that has a Coordinate as first entry and the current value of the
         board at the coordinate as the second entry.
 
-        Returns
-        -------
+        Returns:
             Tuple with first element Coordinate and second element integer value at the given
                 coordinate.
 
@@ -341,11 +317,9 @@ class Board:
         """Calcuate the index of the given coordinate in the internal value storage.
 
         Args:
-        ----
             coordinate: Coordinate for which the index should be calculated.
 
         Returns:
-        -------
             Index that corresponds to the `coordinate`.
 
         """
@@ -355,11 +329,9 @@ class Board:
         """Return the value at `coordinate`.
 
         Args:
-        ----
             coordinate: Coordinate of the cell for which to return the value.
 
         Returns:
-        -------
             Value of the cell given by `coordinate`.
 
         """
@@ -370,12 +342,10 @@ class Board:
         """Set `value` at `coordinate` in case the value is valid for this position.
 
         Args:
-        ----
             coordinate: Position on the board that should be updated.
             value: New value.
 
         Raises:
-        ------
             InvalidCellValueException: If `value` is not valid for position given by `coordinate`.
                 A value is valid if one of the following cases holds:
                 - The coordinate was initially empty and the value is 0.
