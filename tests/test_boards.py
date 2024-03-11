@@ -393,14 +393,26 @@ class TestBoard:
 class TestCoordinate:
     """Test cases for the coordinate dataclass."""
 
-    def test_coordinate_invalid_row(self) -> None:
+    @pytest.mark.parametrize(
+        ("row", "column"),
+        [
+            (-1, 10),
+            (9, 5),
+        ],
+    )
+    def test_coordinate_invalid_row(self, row: int, column: int) -> None:
         """Test that a coordinate cannot be created with an invalid row index."""
-        with pytest.raises(ValueError, match=r"Row index needs to be between zero and eight. Given -1") as excinfo:
-            Coordinate(-1, 10)
-        assert str(excinfo.value) == "Row index needs to be between zero and eight. Given -1"
+        with pytest.raises(ValueError, match=f"Row index needs to be between zero and eight. Given {row}"):
+            Coordinate(row, column)
 
-    def test_coordinate_invalid_column(self) -> None:
+    @pytest.mark.parametrize(
+        ("row", "column"),
+        [
+            (2, -1),
+            (3, 9),
+        ],
+    )
+    def test_coordinate_invalid_column(self, row: int, column: int) -> None:
         """Test that a coordinate cannot be created with an invalid column index."""
-        with pytest.raises(ValueError, match=r"Row index needs to be between zero and eight. Given 10") as excinfo:
-            Coordinate(0, 10)
-        assert str(excinfo.value) == "Column index needs to be between zero and eight. Given 10"
+        with pytest.raises(ValueError, match=f"Column index needs to be between zero and eight. Given {column}"):
+            Coordinate(row, column)
