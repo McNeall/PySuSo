@@ -44,7 +44,7 @@ class Coordinate:
         if self.row < self._INDEX_LOWER_BOUND or self.row > self._INDEX_UPPER_BOUND:
             message = f"Row index needs to be between zero and eight. Given {self.row}"
             raise ValueError(message)
-        if self.col < self._INDEX_LOWER_BOUND or self.col > self.row > self._INDEX_UPPER_BOUND:
+        if self.col < self._INDEX_LOWER_BOUND or self.col > self._INDEX_UPPER_BOUND:
             message = f"Column index needs to be between zero and eight. Given {self.col}"
             raise ValueError(message)
 
