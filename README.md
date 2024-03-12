@@ -36,19 +36,19 @@ board = Board.from_list(
 )
 ```
 
-Create a solver providing the board
+Create a solver providing the board:
 
 ```py
 solver = BasicSolver(board)
 ```
 
-Call the `solve` method to search for a valid solution
+Call the `solve` method to search for a valid solution:
 
 ```py
 solver.solve()
 ```
 
-Full example including imports
+Full example including imports:
 
 ```py
 from pysuso.boards import Board
@@ -74,7 +74,7 @@ print(solution)
 
 ## Documentation
 
-Full documentation is available at [PySuSo Documentation](https://mcneall.github.io/PySuSo/)
+Full documentation is available at [PySuSo Documentation](https://mcneall.github.io/PySuSo/).
 
 ## Additional remarks
 
