@@ -7,6 +7,14 @@ PySuSo is a library for solving Sudoku puzzels with Python.
 PySuSo provides a brute force backtracking solver for Sudoku puzzels. In addition to the solver a board
 representing the Sudoku puzzel is provided.
 
+## Installation
+
+PySuSo is available on PyPi as `pysuso`. To install with `pipe` run:
+
+```
+pip install pysuso
+```
+
 ## Quick start
 
 Create a board using one of the provided methods on the `Board` class. See the documentation for an overview off all
@@ -66,7 +74,7 @@ print(solution)
 
 ## Documentation
 
-Full documentation is available at [PySuSo Documentation]()
+Full documentation is available at [PySuSo Documentation](https://mcneall.github.io/PySuSo/)
 
 ## Additional remarks
 
