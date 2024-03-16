@@ -373,12 +373,16 @@ class Board:
 
     def __str__(self) -> str:
         """Return a string representation of the board."""
-        formated_rows: list[str] = []
+        first_line = "┌" + "───┬" * (self._BOARD_DIM - 1) + "───┐"
+        formated_rows: list[str] = [first_line]
+        row_separator_line = "├" + "───┼" * (self._BOARD_DIM - 1) + "───┤"
+        row_value_template = "│" + " {} │" * self._BOARD_DIM
         for i in range(0, self._BOARD_DIM**2, self._BOARD_DIM):
             row = self._values[i : i + self._BOARD_DIM]
-            template_string = ("| " + "{} | " * self._BOARD_DIM).strip()
-            formated_row = template_string.format(*row)
-            formated_rows.append("-" * len(formated_row))
+            formated_row = row_value_template.format(*row)
             formated_rows.append(formated_row)
-        formated_rows.append("-" * len(formated_rows[-1]))
+            formated_rows.append(row_separator_line)
+        last_row_line = "└" + "───┴" * (self._BOARD_DIM - 1) + "───┘"
+        # Replace the row separators of the last row with more suitable last row line
+        formated_rows[-1] = last_row_line
         return f"{os.linesep}".join(formated_rows)
