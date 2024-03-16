@@ -10,6 +10,12 @@ requires-python = ">=3.12"
 readme = "README.md"
 license = {text = "MIT"}
 
+[project.urls]
+Home="https://mcneall.github.io/PySuSo/"
+Repository="https://github.com/McNeall/PySuSo"
+Documentation="https://mcneall.github.io/PySuSo/"
+pypi = "https://pypi.org/project/pysuso"
+
 [project.optional-dependencies]
 test = [
     "pytest>=8.0.2",
