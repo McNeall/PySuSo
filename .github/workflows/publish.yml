@@ -1,0 +1,39 @@
+name: Publish to PyPi
+on:
+  release:
+    types:
+      - published
+jobs:
+    publish-pypi:
+      name: Publish distribution ${{ github.ref_name }}
+      runs-on: ubuntu-latest
+      permissions:
+        id-token: write
+      environment: release
+      steps:
+        - uses: actions/checkout@v4
+        - name: Setup PDM
+          uses: pdm-project/setup-pdm@v4
+        - name: Upload to PyPi
+          run: pdm publish
+    publish-docs:
+      name: Create documentation for ${{ github.ref_name }}
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v4
+          with:
+            fetch-depth: 0
+        - name: Setup PDM
+          uses: pdm-project/setup-pdm@v4
+        - name: Install docs dependencies
+          run: |
+            pdm sync -G docs
+        - name: Setup git
+          run: |
+            git config user.name 'github-actions[bot]'
+            git config user.email 'github-actions[bot]@users.noreply.github.com'
+        - name: Publish docs ${{ github.ref_name }}
+          run: |
+            git branch --track docs origin/docs 
+            eval $(pdm venv activate)
+            mike deploy --push --update-aliases v$(versioningit) latest
