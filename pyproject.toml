@@ -23,7 +23,7 @@ format-check = "ruff format --check --quiet"
 lint-check = "ruff check --quiet"
 type-check = "pyright"
 tests = "coverage run -m pytest"
-report = "coverage report --skip-empty --skip-covered"
+report = "coverage report --skip-empty --skip-covered --show-missing"
 coverage = {composite = ["tests", "report"]}
 
 [tool.pdm.dev-dependencies]
