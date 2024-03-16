@@ -15,5 +15,6 @@
         "editor.defaultFormatter": "charliermarsh.ruff",
     },
     "ruff.path": [".venv/Scripts/ruff"],
-    "ruff.interpreter": [".venv/Scripts/python"]
+    "ruff.interpreter": [".venv/Scripts/python"],
+    "editor.fontFamily": "Source Code Pro",
 }
