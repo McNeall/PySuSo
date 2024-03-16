@@ -16,6 +16,14 @@ Repository="https://github.com/McNeall/PySuSo"
 Documentation="https://mcneall.github.io/PySuSo/"
 pypi = "https://pypi.org/project/pysuso"
 
+[tool.pdm.scripts]
+format-check = "ruff format --check --quiet"
+lint-check = "ruff check --quiet"
+type-check = "pyright"
+tests = "coverage run -m pytest"
+report = "coverage report --skip-empty --skip-covered"
+coverage = {composite = ["tests", "report"]}
+
 [project.optional-dependencies]
 test = [
     "pytest>=8.0.2",
