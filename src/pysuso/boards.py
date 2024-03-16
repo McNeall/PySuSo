@@ -14,7 +14,8 @@ from pysuso.exceptions import (
 )
 
 # Required to avoid circular imports. Skips import at runtime.
-if TYPE_CHECKING:
+# Since this is not part of the actual code it is excluded from coverage reports
+if TYPE_CHECKING:  # pragma: no cover
     from collections.abc import Iterator
 
 
