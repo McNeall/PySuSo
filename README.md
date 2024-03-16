@@ -9,7 +9,7 @@ representing the Sudoku puzzel is provided.
 
 ## Installation
 
-PySuSo is available on PyPi as `pysuso`. To install with `pipe` run:
+PySuSo is available on PyPi as `pysuso`. To install with `pip` run:
 
 ```
 pip install pysuso
