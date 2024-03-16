@@ -1,5 +1,5 @@
 site_name: PySuSo
-site_url: ""
+site_url: "https://mcneall.github.io/PySuSo/"
 # This is the name of the branch that will be used by mike to commit versions of the documentation
 remote_branch: docs 
 extra:
