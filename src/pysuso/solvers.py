@@ -10,7 +10,7 @@ class BasicSolver:
     """A basic Soduko solver using a brute force back tracking algorithm.
 
     This solver uses back tracking for the empty cells. Cells are processed left to right, top to
-    bottom. It always picks the next higher value valid value. The algorithm stops in case one valid
+    bottom. It always picks the next higher valid value. The algorithm stops in case one valid
     solution is found. There is no check if there is another valid solution.
     """
 
@@ -21,8 +21,7 @@ class BasicSolver:
         """Configure the solver.
 
         Args:
-            board: Board that should be solved
-
+            board: Board that should be solved.
         """
         self.unsolved_board = board
 
@@ -34,7 +33,6 @@ class BasicSolver:
 
         Returns:
             A board filled with a valid solution.
-
         """
         remaining_cells = deque([coordinate for coordinate, value in self.unsolved_board if value == 0])
         history: deque[Coordinate] = deque()

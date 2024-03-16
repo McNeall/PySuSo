@@ -1,4 +1,4 @@
-"""Contains an implementation of a Sudoku board and related objects."""
+"""Implementations of a Sudoku board and related objects."""
 
 from __future__ import annotations
 
@@ -22,7 +22,8 @@ if TYPE_CHECKING:
 class Coordinate:
     """Represents a coordinate on a board.
 
-    The indices passed to the dataclass are validate. A coordinate is immutable.
+    Upon creation a `Coordinate` validates the passed indices. After the validation passes and the
+    `Coordinate` is created the indices cannot be changed.
 
     Args:
         row: Row index of the coordinate. Needs to be between 0 and 8, both included.
@@ -31,7 +32,6 @@ class Coordinate:
     Raises:
         ValueError: If row or column index are invalid. Indizes are invalid in case they are not
             between zero and 8, both included.
-
     """
 
     _INDEX_LOWER_BOUND = 0
@@ -40,7 +40,7 @@ class Coordinate:
     col: int
 
     def __post_init__(self) -> None:
-        """Validate rules for coordiante."""
+        """Validate passed row and column indices."""
         if self.row < self._INDEX_LOWER_BOUND or self.row > self._INDEX_UPPER_BOUND:
             message = f"Row index needs to be between zero and eight. Given {self.row}"
             raise ValueError(message)
@@ -50,14 +50,18 @@ class Coordinate:
 
 
 class CallType(Enum):
-    """Used to specify the allowed call types of the Board constructor."""
+    """Allowed call types of the Board constructor.
+
+    The `__init__` method of a `Board` should only be called by the provided factory methods.
+    The enum is used to describe the  call types.
+    """
 
     PRIVATE = 1
     NON_PRIVATE = 2
 
 
 class Board:
-    """Presenting a possibly unfinished Sudoku board."""
+    """Models a possibly unfinished Sudoku board."""
 
     _BOARD_DIM = 9
     _SQUARE_SIZE = 3
@@ -66,7 +70,7 @@ class Board:
     def __init__(self, values: list[int], _call_type: CallType = CallType.NON_PRIVATE) -> None:
         """Initialize the Board. Should not be called from outside the class.
 
-        The constructure initializes the class but assumes a valid input. Do not not directly
+        The constructure initializes the class but assumes a valid input. Do not directly
         instantiate this class. Use one of the factory methods:
 
         - from_nested_lists
@@ -76,12 +80,11 @@ class Board:
         Args:
             values: Values to initialize the Board. Values are not checked.
             _call_type: Indicates if the constructor was called from outside the class.
-                Defaults to 'True'.
+                Defaults to `CallType.NON_PRIVATE`, which indicates it was called called directly.
 
         Raises:
             RuntimeError: If constructor is called directly, that is not using one of the listed
                 factory methods
-
         """
         if _call_type != CallType.PRIVATE:
             message = (
@@ -104,15 +107,14 @@ class Board:
             values: The values used to create the board
 
         Returns:
-            Board: Board holding the values given by `values`.
+            Board holding the values given by `values`.
 
         Raises:
-            InvalidBoardException: Raised in the following cases:
+            InvalidBoardError: Raised in the following cases:
 
                 - If the outter list has less than nine inner lists.
                 - If an inner list has less than nine elements.
                 - If the values are not between zero and nine.
-
         """
         if len(values) != cls._BOARD_DIM:
             message = f"Cannot create board. Expected {cls._BOARD_DIM} rows but received {len(values)}."
@@ -152,14 +154,13 @@ class Board:
             values: The values used to create the board.
 
         Returns:
-            Board: Board holding the values given by `values`.
+            Board holding the values given by `values`.
 
         Raises:
-            InvalidBoardException: Raised in the following cases:
+            InvalidBoardError: Raised in the following cases:
 
                 - If `values` does not have exactly 81 elements
                 - If elements of `values` are not between 0 and 9, both included.
-
         """
         if len(values) != cls._BOARD_DIM**2:
             message = f"Cannot create board. Expected {cls._BOARD_DIM ** 2} rows but received {len(values)}."
@@ -176,7 +177,7 @@ class Board:
     def from_string(cls, values: str) -> Board:
         """Return a new Board based on the passed values.
 
-        The passed string needs to have exactly 81 characters. Each character being an integer
+        The passed string needs to have exactly 81 characters. Each character being an integer.
 
         Args:
             values: The values used to create the board
@@ -185,12 +186,11 @@ class Board:
             Board holding the values given by `values` after converting to integer
 
         Raises:
-            InvalidBoardException: Raised in the following cases:
+            InvalidBoardError: Raised in the following cases:
 
                 - If the passed string does not have exactly 81 characters
                 - If there is a character that is not convertible to an integer
                 - If the converted characters are not integers between zero and nine
-
         """
         if len(values) != cls._BOARD_DIM**2:
             message = f"Cannot create board. Expected {cls._BOARD_DIM ** 2} values but received {len(values)}."
@@ -211,16 +211,18 @@ class Board:
         return cls(valid_values, _call_type=CallType.PRIVATE)
 
     def available_col_values(self, column_index: int) -> frozenset[int]:
-        """Return the allowed but unused values for the column given by column_index.
+        """Return the allowed but unused values for the column given by `column_index`.
 
         Args:
-            column_index: The column index starting at 0.
+            column_index: The column index specifying the column for which the values should be
+                retrieved. The index is zero based, hence the allowed values are between zero and eight,
+                both included.
 
         Returns:
-            Values available for the row indentified by the passed row_index
+            Values available for the column indentified by the passed column_index
 
         Raises:
-            InvalidIndexException: If `column_index` is less than 0 or greater or equal 9.
+            InvalidIndexError: If `column_index` is less than zero or greater than eight.
 
         """
         if column_index < 0 or column_index >= self._BOARD_DIM:
@@ -230,16 +232,18 @@ class Board:
         return Board._VALID_VALUES.difference(values_in_column)
 
     def available_row_values(self, row_index: int) -> frozenset[int]:
-        """Return the allowed but unused values for the row given by row_index.
+        """Return the allowed but unused values for the row given by `row_index`.
 
         Args:
-            row_index: The row index starting at 0. Values has to be between 0 and 8.
+            row_index: The row index specifying the row for which the values should be
+                retrieved. The index is zero based, hence the allowed values are between zero and eight,
+                both included.
 
         Returns:
             Values available for the row indentified by the passed row_index
 
         Raises:
-            InvalidIndexException: If `row_index` is less than 0 or greater or equal 9.
+            InvalidIndexError: If `row_index` is less than zero or greater or equal eight.
 
         """
         if row_index < 0 or row_index >= self._BOARD_DIM:
@@ -249,14 +253,16 @@ class Board:
         return Board._VALID_VALUES.difference(values_in_row)
 
     def available_square_values(self, coordinate: Coordinate) -> frozenset[int]:
-        """Return the allowed but unused values of the 3x3 square that contains the coordinate.
+        """Return the allowed but unused values of the 3x3 square that contains `coordinate`.
+
+        The board is separated in in 3x3 squares starting from `Coordinate(0, 0)`. Every three rows
+        and columns a new square starts.
 
         Args:
-            coordinate: coordinate used to determine the square for which the values should be returned.
+            coordinate: Coordinate used to determine the square for which the values should be returned.
 
         Returns:
             Values available for the 3x3 square the given coordinate is located in.
-
         """
         top_left = Coordinate(
             coordinate.row - coordinate.row % self._SQUARE_SIZE,
@@ -274,9 +280,12 @@ class Board:
         A value is seen as valid if all of the following cases hold:
 
         - Value is between 1 and 9 both included.
-        - Value is not yet present in the row the cell belongs to.
-        - Value is not yet present in the column the cell belongs to.
-        - Value is not yet present in the 3x3 square the cell is in.
+        - Value is not yet present in the row the cell belongs to. This does not include zeros.
+          The value zero is allowed multiple times.
+        - Value is not yet present in the column the cell belongs to. This does not include zeros.
+          The value zero is allowed multiple times.
+        - Value is not yet present in the 3x3 square the cell is in. This does not include zeros.
+          The value zero is allowed multiple times.
 
         Args:
             coordinate: Position on the board.
@@ -343,14 +352,14 @@ class Board:
 
         Args:
             coordinate: Position on the board that should be updated.
-            value: New value.
+            value: The value to be set.
 
         Raises:
             InvalidCellValueException: If `value` is not valid for position given by `coordinate`.
                 A value is valid if one of the following cases holds:
+
                 - The coordinate was initially empty and the value is 0.
                 - The value fulfills the conditions of a valid sudoku board. See `is_valid` method.
-
         """
         # Allow to set an initial empty cell to empty again
         valid_for_empty_cell = coordinate in self._initial_empty_cells and value == 0
