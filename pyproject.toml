@@ -18,6 +18,7 @@ pypi = "https://pypi.org/project/pysuso"
 
 [tool.pdm]
 distribution = true
+
 [tool.pdm.scripts]
 format-check = "ruff format --check --quiet"
 lint-check = "ruff check --quiet"
