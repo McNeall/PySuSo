@@ -1,0 +1,22 @@
+name: Verify Pull Request
+run-name: Verify Pull Request
+on: [pull_request]
+jobs: 
+  Verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup PDM
+        uses: pdm-project/setup-pdm@v4
+      - name: Install dependencies
+        run: pdm sync
+      - name: Check types
+        run: pdm run type-check
+      - name: Check formatting
+        run: pdm run format-check
+      - name: Run linter
+        run: pdm run lint-check
+      - name: Run tests
+        run: pdm run tests
