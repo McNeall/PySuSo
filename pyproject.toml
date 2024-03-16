@@ -16,6 +16,8 @@ Repository="https://github.com/McNeall/PySuSo"
 Documentation="https://mcneall.github.io/PySuSo/"
 pypi = "https://pypi.org/project/pysuso"
 
+[tool.pdm]
+distribution = true
 [tool.pdm.scripts]
 format-check = "ruff format --check --quiet"
 lint-check = "ruff check --quiet"
@@ -23,6 +25,14 @@ type-check = "pyright"
 tests = "coverage run -m pytest"
 report = "coverage report --skip-empty --skip-covered"
 coverage = {composite = ["tests", "report"]}
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "mypy>=1.8.0",
+    "ruff>=0.3.2",
+    "pyright>=1.1.353",
+    "coverage>=7.4.4",
+]
 
 [project.optional-dependencies]
 test = [
@@ -49,16 +59,6 @@ include = ["src/*.py"]
 
 [tool.hatch.version]
 source = "versioningit"
-
-[tool.pdm]
-distribution = true
-
-[tool.pdm.dev-dependencies]
-dev = [
-    "mypy>=1.8.0",
-    "ruff>=0.3.2",
-    "pyright>=1.1.353",
-]
 
 [tool.pytest.ini_options]
 pythonpath = [
