@@ -1,0 +1,1 @@
+"""PySuSo tests."""

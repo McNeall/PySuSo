@@ -1,0 +1,20 @@
+{
+    // Helps to discover tests
+    "python.testing.pytestArgs": [
+        "tests"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true,
+
+    "[python]": {
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+        "source.fixAll": "explicit",
+        "source.organizeImports": "explicit"
+        },
+        "editor.defaultFormatter": "charliermarsh.ruff",
+    },
+    "ruff.path": [".venv/Scripts/ruff"],
+    "ruff.interpreter": [".venv/Scripts/python"],
+    "editor.fontFamily": "Source Code Pro",
+}
