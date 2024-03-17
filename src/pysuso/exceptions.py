@@ -13,5 +13,5 @@ class InvalidIndexError(ValueError):
     """Raised in case an index is not valid."""
 
 
-class BoardNotSolvableException(BaseException):
+class BoardNotSolvableException(Exception):
     """Raised in case the board does not have a solution."""

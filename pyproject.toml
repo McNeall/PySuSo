@@ -108,7 +108,8 @@ ignore = [
     "COM812", # Conflicts with formatter.
     "ISC001",
     "ANN101", # Deprecated
-    "ANN102" # Deprecated
+    "ANN102", # Deprecated
+    "N818" # Rule seems to give false positives for Exceptions that do not have Error as suffix.
 ]
 fixable = ["ALL"]
 unfixable = [
