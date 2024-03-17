@@ -16,25 +16,6 @@ Repository="https://github.com/McNeall/PySuSo"
 Documentation="https://mcneall.github.io/PySuSo/"
 pypi = "https://pypi.org/project/pysuso"
 
-[tool.pdm]
-distribution = true
-
-[tool.pdm.scripts]
-format-check = "ruff format --check --quiet"
-lint-check = "ruff check --quiet"
-type-check = "pyright"
-tests = "coverage run -m pytest"
-report = "coverage report --skip-empty --skip-covered --show-missing"
-coverage = {composite = ["tests", "report"]}
-
-[tool.pdm.dev-dependencies]
-dev = [
-    "mypy>=1.8.0",
-    "ruff>=0.3.2",
-    "pyright>=1.1.353",
-    "coverage>=7.4.4",
-]
-
 [project.optional-dependencies]
 test = [
     "pytest>=8.0.2",
@@ -151,3 +132,23 @@ default-tag= "0.1.0"
 
 [tool.versioningit.tag2version]
 method = "basic"
+
+[tool.pdm]
+distribution = true
+
+[tool.pdm.scripts]
+format-check = "ruff format --check --quiet"
+lint-check = "ruff check --quiet"
+type-check = "pyright"
+tests = "coverage run -m pytest"
+report = "coverage report --skip-empty --skip-covered --show-missing"
+coverage-xml = "coverage xml -o overage.xml"
+coverage = {composite = ["tests", "report", "coverage-xml"]}
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "ruff>=0.3.2",
+    "pyright>=1.1.353",
+    "coverage>=7.4.4",
+]
+
