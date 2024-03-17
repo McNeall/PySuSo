@@ -70,7 +70,7 @@ pythonpath = [
 line-length = 120
 indent-width = 4
 target-version = "py312"
-include = ["pyproject.toml", "src/**/*.py", "tests/**/*.py"]
+include = ["pyproject.toml", "src/**/*.py", "tests/**/*.py", "docs/hooks/**/*.py"]
 exclude = [
     ".bzr",
     ".direnv",
@@ -98,7 +98,6 @@ exclude = [
     "node_modules",
     "site-packages",
     "venv",
-    "docs",
 ]
 
 [tool.ruff.lint]
