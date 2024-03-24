@@ -7,9 +7,9 @@ from pysuso.exceptions import BoardNotSolvableException, InvalidCellValueError
 
 
 class BasicSolver:
-    """A basic Soduko solver using a brute force back tracking algorithm.
+    """A basic Sudoku solver using a brute force backtracking algorithm.
 
-    This solver uses back tracking for the empty cells. Cells are processed left to right, top to
+    This solver uses backtracking for the empty cells. Cells are processed left to right, top to
     bottom. It always picks the next higher valid value. The algorithm stops in case one valid
     solution is found. There is no check if there is another valid solution.
     """
@@ -50,8 +50,8 @@ class BasicSolver:
                 self.unsolved_board[current_coordinate] = 0
                 remaining_cells.append(current_coordinate)
                 if history:
-                    lastest_history_item = history.pop()
-                    remaining_cells.append(lastest_history_item)
+                    latest_history_item = history.pop()
+                    remaining_cells.append(latest_history_item)
                 else:
                     message = "No valid solution found."
                     raise BoardNotSolvableException(message)

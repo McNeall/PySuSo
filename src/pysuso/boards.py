@@ -31,7 +31,7 @@ class Coordinate:
         col: Col index of the coordinate. Needs to be between 0 and 8, both included.
 
     Raises:
-        ValueError: If row or column index are invalid. Indizes are invalid in case they are not
+        ValueError: If row or column index are invalid. Indices are invalid in case they are not
             between zero and 8, both included.
     """
 
@@ -71,7 +71,7 @@ class Board:
     def __init__(self, values: list[int], _call_type: CallType = CallType.NON_PRIVATE) -> None:
         """Initialize the Board. Should not be called from outside the class.
 
-        The constructure initializes the class but assumes a valid input. Do not directly
+        The constructor initializes the class but assumes a valid input. Do not directly
         instantiate this class. Use one of the factory methods:
 
         - from_nested_lists
@@ -89,7 +89,7 @@ class Board:
         """
         if _call_type != CallType.PRIVATE:
             message = (
-                "Calling the Board constructure is not supported. Use one of the factory methods to create a board."
+                "Calling the Board constructor is not supported. Use one of the factory methods to create a board."
             )
             raise RuntimeError(message)
         self._values: list[int] = values
@@ -123,10 +123,10 @@ class Board:
 
         invalid_row_length = {i: len(row) for i, row in enumerate(values) if len(row) != cls._BOARD_DIM}
         if invalid_row_length:
-            message = ["Cannot create board. Rows found with invalid length"]
+            message = ["Cannot create board. Found rows with invalid length"]
             message.extend(
                 (
-                    f"{row_index}: Expectec length {cls._BOARD_DIM}, actual length {row_length}"
+                    f"{row_index}: Expected length {cls._BOARD_DIM}, actual length {row_length}"
                     for row_index, row_length in invalid_row_length.items()
                 )
             )
@@ -139,7 +139,7 @@ class Board:
             if value not in valid_values_with_placeholder
         }
         if invalid_values:
-            message = ["Expect values between 0 and 9. Found invalid values:"]
+            message = ["Expected values between 0 and 9. Found invalid values:"]
             message.extend((f"{position}: {value}" for position, value in invalid_values.items()))
             raise InvalidBoardError(f"{os.linesep}".join(message))
         return cls([value for row in values for value in row], _call_type=CallType.PRIVATE)
@@ -169,7 +169,7 @@ class Board:
         valid_values_with_placeholder = cls._VALID_VALUES.union([0])
         invalid_values = {i: value for i, value in enumerate(values) if value not in valid_values_with_placeholder}
         if invalid_values:
-            message = ["Expect values between 0 and 9. Found invalid values:"]
+            message = ["Expected values between 0 and 9. Found invalid values:"]
             message.extend((f"{index}: {value}" for index, value in invalid_values.items()))
             raise InvalidBoardError(f"{os.linesep}".join(message))
         return cls(values, _call_type=CallType.PRIVATE)
@@ -220,7 +220,7 @@ class Board:
                 both included.
 
         Returns:
-            Values available for the column indentified by the passed column_index
+            Values available for the column identified by the passed column_index
 
         Raises:
             InvalidIndexError: If `column_index` is less than zero or greater than eight.
