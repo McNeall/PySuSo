@@ -141,9 +141,9 @@ format-check = "ruff format --check --quiet"
 lint-check = "ruff check --quiet"
 type-check = "pyright"
 tests = "coverage run -m pytest"
-report = "coverage report --skip-empty --skip-covered --show-missing"
-coverage-xml = "coverage xml -o overage.xml"
-coverage = {composite = ["tests", "report", "coverage-xml"]}
+coverage-summary = "coverage report --skip-empty --skip-covered --show-missing"
+coverage-xml = "coverage xml -q --data-file=.coverage -o coverage.xml"
+coverage-report = {composite = ["tests", "coverage-xml"]}
 
 [tool.pdm.dev-dependencies]
 dev = [
