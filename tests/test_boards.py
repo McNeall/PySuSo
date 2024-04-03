@@ -313,7 +313,7 @@ class TestBoard:
     ) -> None:
         """Test creation of board from nested list with invald symbols."""
         exception_message = re.escape(
-            f"Expect values between 0 and 9. Found invalid values:{os.linesep}"
+            f"Expected values between 0 and 9. Found invalid values:{os.linesep}"
             f"(0, 0): ?{os.linesep}(4, 4): ?{os.linesep}(8, 8): ?"
         )
         with pytest.raises(InvalidBoardError, match=exception_message):
@@ -332,10 +332,10 @@ class TestBoard:
     ) -> None:
         """Test creation of board from nested list with invald number of columns."""
         exception_message = re.escape(
-            f"Cannot create board. Rows found with invalid length{os.linesep}"
-            f"0: Expectec length 9, actual length 8{os.linesep}"
-            f"2: Expectec length 9, actual length 8{os.linesep}"
-            "8: Expectec length 9, actual length 8"
+            f"Cannot create board. Found rows with invalid length{os.linesep}"
+            f"0: Expected length 9, actual length 8{os.linesep}"
+            f"2: Expected length 9, actual length 8{os.linesep}"
+            "8: Expected length 9, actual length 8"
         )
         with pytest.raises(InvalidBoardError, match=exception_message):
             Board.from_nested_lists(invalid_number_of_columns)
@@ -363,7 +363,7 @@ class TestBoard:
     ) -> None:
         """Test creation of board from flat list with invalid values."""
         exception_message = re.escape(
-            f"Expect values between 0 and 9. Found invalid values:{os.linesep}"
+            f"Expected values between 0 and 9. Found invalid values:{os.linesep}"
             f"13: -1{os.linesep}"
             f"52: 10{os.linesep}"
             f"57: 😀{os.linesep}"
@@ -378,7 +378,7 @@ class TestBoard:
         with pytest.raises(
             RuntimeError,
             match=re.escape(
-                "Calling the Board constructure is not supported. Use one of the factory methods to create a board."
+                "Calling the Board constructor is not supported. Use one of the factory methods to create a board."
             ),
         ):
             Board(flat_list_raw_values)
