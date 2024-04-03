@@ -1,4 +1,4 @@
-"""Customize the docs build process"""
+"""Customize the docs build process."""
 
 from pathlib import Path
 
@@ -10,14 +10,14 @@ DOCS_DIR = PLUGIN_DIR.parent
 PROJECT_ROOT = DOCS_DIR.parent
 
 
-def on_files(files: Files, config: Config):
+def on_files(files: Files, config: Config) -> None:
     """Implement this hook to get the CHANGELOG.md and the README.md from the project root."""
     dest_dir_base_path = Path(config.site_dir)
     for file_path in ["./README.md", "./CHANGELOG.md"]:
-        file = File(
+        docs_file = File(
             path=file_path,
             src_dir=str(PROJECT_ROOT),
             dest_dir=str(dest_dir_base_path),
             use_directory_urls=True,
         )
-        files.append(file)
+        files.append(docs_file)

@@ -16,25 +16,6 @@ Repository="https://github.com/McNeall/PySuSo"
 Documentation="https://mcneall.github.io/PySuSo/"
 pypi = "https://pypi.org/project/pysuso"
 
-[tool.pdm]
-distribution = true
-
-[tool.pdm.scripts]
-format-check = "ruff format --check --quiet"
-lint-check = "ruff check --quiet"
-type-check = "pyright"
-tests = "coverage run -m pytest"
-report = "coverage report --skip-empty --skip-covered --show-missing"
-coverage = {composite = ["tests", "report"]}
-
-[tool.pdm.dev-dependencies]
-dev = [
-    "mypy>=1.8.0",
-    "ruff>=0.3.2",
-    "pyright>=1.1.353",
-    "coverage>=7.4.4",
-]
-
 [project.optional-dependencies]
 test = [
     "pytest>=8.0.2",
@@ -70,7 +51,7 @@ pythonpath = [
 line-length = 120
 indent-width = 4
 target-version = "py312"
-include = ["pyproject.toml", "src/**/*.py", "tests/**/*.py"]
+include = ["pyproject.toml", "src/**/*.py", "tests/**/*.py", "docs/hooks/**/*.py"]
 exclude = [
     ".bzr",
     ".direnv",
@@ -98,7 +79,6 @@ exclude = [
     "node_modules",
     "site-packages",
     "venv",
-    "docs",
 ]
 
 [tool.ruff.lint]
@@ -109,7 +89,8 @@ ignore = [
     "COM812", # Conflicts with formatter.
     "ISC001",
     "ANN101", # Deprecated
-    "ANN102" # Deprecated
+    "ANN102", # Deprecated
+    "N818" # Rule seems to give false positives for Exceptions that do not have Error as suffix.
 ]
 fixable = ["ALL"]
 unfixable = [
@@ -151,3 +132,23 @@ default-tag= "0.1.0"
 
 [tool.versioningit.tag2version]
 method = "basic"
+
+[tool.pdm]
+distribution = true
+
+[tool.pdm.scripts]
+format-check = "ruff format --check --quiet"
+lint-check = "ruff check --quiet"
+type-check = "pyright"
+tests = "coverage run -m pytest"
+coverage-summary = "coverage report --skip-empty --skip-covered --show-missing"
+coverage-xml = "coverage xml -q --data-file=.coverage -o coverage.xml"
+coverage-report = {composite = ["tests", "coverage-xml"]}
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "ruff>=0.3.2",
+    "pyright>=1.1.353",
+    "coverage>=7.4.4",
+]
+
