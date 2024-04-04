@@ -6,7 +6,7 @@ by one of the factory methods.
 To create a board with the the  `from_neste_lists` factory method requires a list with nine elements,
 each a list with nine integers between from zero to nine. The following code shows an example:
 
-```py
+```py linenums="1"
 from pysuso.boards import Board
 from pysuso.solvers import BasicSolver
 
@@ -52,7 +52,7 @@ print(solution)
 To create a board with the the  `from_list` factory method requires a list with 81 elements,
 each an integer between zero to nine. The following code shows an example:
 
-```py
+```py linenums="1"
 from pysuso.boards import Board
 from pysuso.solvers import BasicSolver
 
@@ -98,7 +98,7 @@ print(solution)
 To create a board with the the  `from_string` factory method requires a string with 81 elements,
 each an integer between zero to nine. The examples above can be modified as follows:
 
-```py
+```py linenums="1"
 from pysuso.boards import Board
 from pysuso.solvers import BasicSolver
 

@@ -1,0 +1,17 @@
+@font-face {
+    font-family: "CommitMonoDev";
+    src: "../assets/fonts/CommitMono.woff2" format("woff2");
+    font-weight: 275;
+    font-style: normal;
+}
+
+
+:root {
+    --md-text-font: "CommitMon";
+    --md-code-font: "CommitMon";
+    
+}
+
+code{
+    line-height: 1.18em;
+}
