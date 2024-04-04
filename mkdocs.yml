@@ -17,6 +17,9 @@ nav:
 
 theme:
   name: material
+  features:
+    - content.code.copy
+
   palette:
   - media: "(prefers-color-scheme: light)"
     scheme: default
@@ -31,13 +34,16 @@ theme:
     accent: orange
     toggle:
       icon: material/lightbulb
-      name: 
+      name: "Switch to light mode"
 
 watch:
   - src/pysuso
 
 hooks:
   - docs/hooks/pysuso_hooks.py
+
+extra_css:
+  - stylesheets/extra.css
 
 plugins:
   - search
@@ -64,3 +70,15 @@ plugins:
   - mike:
       version_selector: true
       canonical_version: latest
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      # use the inline style, otherwise line numbers do
+      # not scale well
+      linenums_style: pymdownx-inline
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences

@@ -50,7 +50,7 @@ solver.solve()
 
 Full example including imports:
 
-```py
+```py linenums="1"
 from pysuso.boards import Board
 from pysuso.solvers import BasicSolver
 
