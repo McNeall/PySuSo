@@ -1,0 +1,17 @@
+@font-face {
+    font-family: "CommitMonoDev";
+    src: url("../assets/fonts/CommitMono.woff2") format("woff2");
+}
+
+
+:root {
+    --md-text-font: "CommitMonoDev";
+    --md-code-font: "CommitMonoDev";
+    
+}
+
+code{
+    line-height: 1.72em;
+    font-feature-settings:"ss01" on, "ss02" on, "ss03" on, "ss04" on,
+                          "ss05" on, "cv02" on, "cv05" on;
+}
