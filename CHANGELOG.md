@@ -1,5 +1,28 @@
 # Changelog
 
+## v0.3.1 (2024-04-08)
+
+### Feature
+
+- None 
+
+### Fix
+
+- None
+
+### Documentation
+
+- Fix loading custom font
+- Enable font features
+
+### Breaking Changes
+
+- None
+
+### Dev Changes
+- None
+
+
 ## v0.3.0 (2024-04-04)
 
 ### Feature
